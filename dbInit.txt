@@ -1,0 +1,6 @@
+create table website (
+    ID int NOT NULL AUTO_INCREMENT,
+    url varchar(255) NOT NULL,
+    password varchar(255) NOT NULL,
+    PRIMARY KEY (ID)
+)

@@ -14,7 +14,8 @@ services:
           safe:
             ipv4_address: 172.28.0.22
     db:
-        image: mysql
+        build: database/.
+        image: custom-db
         env_file: .env
         ports:
             - 3306:3306
