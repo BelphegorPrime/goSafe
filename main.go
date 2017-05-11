@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"runtime"
 	"database/sql"
 	"os"
 	"encoding/json"
 
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/gorilla/context"
 )
 
 var db *sql.DB
@@ -18,6 +18,7 @@ type Configuration struct {
 	Password string `json:"password"`
 	Database string `json:"database"`
 }
+
 func init() {
 	fmt.Println("<Konfiguration lesen>")
 	configFile, err := os.Open("./config.json")
@@ -35,12 +36,11 @@ func init() {
 	db = dbFromConfig
 }
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "hello world, I'm running on %s with an %s CPU ", runtime.GOOS, runtime.GOARCH)
-}
-
 func main() {
-	fmt.Println("hello world")
-	http.HandleFunc("/", indexHandler)
-	http.ListenAndServe(":8080", nil)
+	router := NewRouter()
+	http.Handle("/", router)
+	errHTTP := http.ListenAndServe(":8080", nil)
+	if errHTTP != nil {
+		fmt.Println("Error: " + errHTTP.Error())
+	}
 }
