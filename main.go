@@ -12,6 +12,7 @@ import (
 )
 
 var db *sql.DB
+var configuration Configuration
 type Configuration struct {
 	Host     string `json:"host"`
 	User     string `json:"user"`
@@ -26,7 +27,7 @@ func init() {
 		fmt.Println("Konfigurations Lesefehler: "+err.Error())
 	}
 	jsonDecoder := json.NewDecoder(configFile)
-	configuration := Configuration{}
+	configuration = Configuration{}
 	jsonDecoder.Decode(&configuration)
 	fmt.Println("<Datenbankverbindung herstellen>")
 	dbFromConfig, err := sql.Open("mysql", configuration.User+":"+configuration.Password+"@tcp("+configuration.Host+")/"+configuration.Database+"?parseTime=true")
