@@ -28,3 +28,5 @@ _testmain.go
 db/
 .idea/
 config.json
+server.crt
+server.key

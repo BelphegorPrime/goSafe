@@ -40,8 +40,8 @@ func init() {
 func main() {
 	router := NewRouter()
 	http.Handle("/", router)
-	errHTTP := http.ListenAndServe(":8080", nil)
-	if errHTTP != nil {
-		fmt.Println("Error: " + errHTTP.Error())
+	err := http.ListenAndServeTLS(":443", "server.crt", "server.key", nil)
+	if err != nil {
+		fmt.Println("Error: " + err.Error())
 	}
 }
