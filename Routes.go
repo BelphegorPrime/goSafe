@@ -24,6 +24,12 @@ var routes = Routes{
 		save_func,
 	},
 	Route{
+		"get",
+		"GET",
+		"/get",
+		get_func,
+	},
+	Route{
 		"getAll",
 		"GET",
 		"/getAll",

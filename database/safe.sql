@@ -25,6 +25,7 @@ DROP TABLE IF EXISTS `website`;
 CREATE TABLE `website` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `url` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
