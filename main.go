@@ -13,11 +13,13 @@ import (
 
 var db *sql.DB
 var configuration Configuration
+var key []byte
 type Configuration struct {
 	Host     string `json:"host"`
 	User     string `json:"user"`
 	Password string `json:"password"`
 	Database string `json:"database"`
+	Key 	 string `json:"key"`
 }
 
 func init() {
@@ -35,6 +37,9 @@ func init() {
 		fmt.Println("Datenbankzugriffs fehler: "+err.Error())
 	}
 	db = dbFromConfig
+
+	key = []byte(configuration.Key) // 32 bytes
+
 }
 
 func main() {
