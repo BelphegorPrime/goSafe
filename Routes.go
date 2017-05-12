@@ -25,7 +25,7 @@ var routes = Routes{
 	},
 	Route{
 		"get",
-		"GET",
+		"POST",
 		"/get",
 		get_func,
 	},

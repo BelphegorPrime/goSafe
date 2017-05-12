@@ -36,7 +36,7 @@ func getRequestContentFromRequest(req *http.Request) map[string]interface{} {
 	return requestContent
 }
 
-func encrypt(key, text []byte) ([]byte, error) {
+func encrypt(text []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err
@@ -52,7 +52,7 @@ func encrypt(key, text []byte) ([]byte, error) {
 	return ciphertext, nil
 }
 
-func decrypt(key, text []byte) ([]byte, error) {
+func decrypt(text []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return nil, err
@@ -76,8 +76,6 @@ func index_func(rw http.ResponseWriter, req *http.Request) {
 }
 func save_func(rw http.ResponseWriter, req *http.Request) {
 	requestContent := getRequestContentFromRequest(req)
-	fmt.Println(requestContent)
-
 	url := requestContent["url"].(string)
 	username := requestContent["username"].(string)
 	password := requestContent["password"].(string)
@@ -93,13 +91,13 @@ func save_func(rw http.ResponseWriter, req *http.Request) {
 			)
 		if err != nil {
 			fmt.Println("Can't insert data into Database: "+err.Error())
-			ciphertext, err := encrypt(key, []byte("Can not insert data into Database"))
+			ciphertext, err := encrypt([]byte("Can not insert data into Database"))
 			if err != nil {
 				fmt.Println("Error: " + err.Error())
 			}
 			rw.Write(ciphertext)
 		}else {
-			ciphertext, err := encrypt(key, []byte("Everything worked fine!"))
+			ciphertext, err := encrypt([]byte("Everything worked fine!"))
 			if err != nil {
 				fmt.Println("Error: " + err.Error())
 			}
@@ -107,7 +105,7 @@ func save_func(rw http.ResponseWriter, req *http.Request) {
 		}
 
 	}else{
-		ciphertext, err := encrypt(key, []byte("not enough parameters given"))
+		ciphertext, err := encrypt([]byte("not enough parameters given"))
 		if err != nil {
 			fmt.Println("Error: " + err.Error())
 		}
@@ -119,11 +117,18 @@ func get_all_function(rw http.ResponseWriter, req *http.Request) {
 }
 
 func get_func(rw http.ResponseWriter, req *http.Request) {
-	encryptedUrl := req.URL.Query().Get("url")
-	url, err := decrypt(key, []byte(encryptedUrl))
+	requestContent := getRequestContentFromRequest(req)
+	url := requestContent["url"].(string)
+
+	//TODO unencrypt the the encrypted url
+	unencryptedUrl := requestContent["urlCrypted"].(string)
+	encryptedurl, err := decrypt([]byte(unencryptedUrl))
 	if err != nil {
 		fmt.Println("Error: " + err.Error())
 	}
+	fmt.Println(encryptedurl)
+
+
 	if len(url) != 0 {
 		var returnString string = ""
 		rows, err := db.Query("SELECT * FROM website WHERE url like ?", url)
@@ -143,13 +148,13 @@ func get_func(rw http.ResponseWriter, req *http.Request) {
 			fmt.Println("Error with Row: "+err.Error())
 		}
 
-		ciphertext, err := encrypt(key, []byte(returnString))
+		ciphertext, err := encrypt([]byte(returnString))
 		if err != nil {
 			fmt.Println("Error: " + err.Error())
 		}
 		rw.Write(ciphertext)
 	}else{
-		ciphertext, err := encrypt(key, []byte("no get parameter given"))
+		ciphertext, err := encrypt([]byte("no get parameter given"))
 		if err != nil {
 			fmt.Println("Error: " + err.Error())
 		}
