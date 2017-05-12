@@ -1,7 +1,8 @@
 # safe
 
-rename .env_example to .env and change the data
-rename config_example.json to config.json and change the data
+rename .env_example to .env and change the data.
+
+rename config_example.json to config.json and change the data.
 
 Generate private key (.key)
 Key considerations for algorithm "RSA" ≥ 2048-bit
