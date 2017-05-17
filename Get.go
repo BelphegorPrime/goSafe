@@ -4,8 +4,7 @@ import (
 	"fmt"
 )
 
-func Get(requestContent map[string]interface{}) []byte {
-	unDecryptedUrl := requestContent["url"].(string)
+func Get(unDecryptedUrl string) []byte {
 	url, err := decrypt([]byte(unDecryptedUrl))
 	if err != nil {
 		fmt.Println("Error: " + err.Error())

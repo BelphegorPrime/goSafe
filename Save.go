@@ -5,10 +5,8 @@ import (
 	"time"
 )
 
-func Save(requestContent map[string]interface{}) []byte {
-	url := requestContent["url"].(string)
-	username := requestContent["username"].(string)
-	password := requestContent["password"].(string)
+func Save(url string, username string, password string) []byte {
+
 	if len(url) != 0 && len(username) != 0 && len(password) != 0 {
 		_, err := db.Exec("INSERT INTO website("+
 			"url, "+
