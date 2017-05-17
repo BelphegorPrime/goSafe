@@ -10,13 +10,6 @@ type Route struct {
 }
 type Routes []Route
 var routes = Routes{
-
-	Route{
-		"index",
-		"GET",
-		"/",
-		index_func,
-	},
 	Route{
 		"save",
 		"POST",
@@ -28,11 +21,5 @@ var routes = Routes{
 		"POST",
 		"/get",
 		get_func,
-	},
-	Route{
-		"getAll",
-		"GET",
-		"/getAll",
-		get_all_function,
 	},
 }

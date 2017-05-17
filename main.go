@@ -37,9 +37,7 @@ func init() {
 		fmt.Println("Datenbankzugriffs fehler: "+err.Error())
 	}
 	db = dbFromConfig
-
 	key = []byte(configuration.Key) // 32 bytes
-
 }
 
 func main() {
