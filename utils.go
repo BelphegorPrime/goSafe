@@ -30,14 +30,14 @@ func encrypt(text []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	ciphertext := make([]byte, aes.BlockSize+len(text))
-	iv := ciphertext[:aes.BlockSize]
+	cipherText := make([]byte, aes.BlockSize+len(text))
+	iv := cipherText[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
 		return nil, err
 	}
 	cfb := cipher.NewCFBEncrypter(block, iv)
-	cfb.XORKeyStream(ciphertext[aes.BlockSize:], []byte(text))
-	encoded := base64.StdEncoding.EncodeToString(ciphertext)
+	cfb.XORKeyStream(cipherText[aes.BlockSize:], []byte(text))
+	encoded := base64.StdEncoding.EncodeToString(cipherText)
 	return []byte(encoded), nil
 }
 
@@ -51,7 +51,7 @@ func decrypt(encoded []byte) ([]byte, error) {
 		return nil, err
 	}
 	if len(data) < aes.BlockSize {
-		return nil, errors.New("ciphertext too short")
+		return nil, errors.New("cipherText too short")
 	}
 	iv := data[:aes.BlockSize]
 	data = data[aes.BlockSize:]
