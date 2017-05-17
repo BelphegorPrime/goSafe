@@ -1,7 +1,9 @@
 package main
+
 import (
-	"net/http"
 	"fmt"
+	"net/http"
+	"time"
 )
 
 func save_func(rw http.ResponseWriter, req *http.Request) {
@@ -13,20 +15,22 @@ func save_func(rw http.ResponseWriter, req *http.Request) {
 		_, err := db.Exec("INSERT INTO website("+
 			"url, "+
 			"username, "+
-			"password) "+
-			"VALUES(?, ?, ?);",
+			"password, "+
+			"timestamp) "+
+			"VALUES(?, ?, ?, ?);",
 			url,
 			username,
 			password,
-			)
+			time.Now(),
+		)
 		if err != nil {
-			fmt.Println("Can't insert data into Database: "+err.Error())
+			fmt.Println("Can't insert data into Database: " + err.Error())
 			ciphertext, err := encrypt([]byte("Can not insert data into Database"))
 			if err != nil {
 				fmt.Println("Error: " + err.Error())
 			}
 			rw.Write(ciphertext)
-		}else {
+		} else {
 			ciphertext, err := encrypt([]byte("Everything worked fine!"))
 			if err != nil {
 				fmt.Println("Error: " + err.Error())
@@ -34,7 +38,7 @@ func save_func(rw http.ResponseWriter, req *http.Request) {
 			rw.Write(ciphertext)
 		}
 
-	}else{
+	} else {
 		ciphertext, err := encrypt([]byte("not enough parameters given"))
 		if err != nil {
 			fmt.Println("Error: " + err.Error())
@@ -53,22 +57,22 @@ func get_func(rw http.ResponseWriter, req *http.Request) {
 	}
 
 	if len(url) != 0 {
-		var returnString string = ""
+		var returnString string = "Url         UserName         Password         Timestamp"
 		rows, err := db.Query("SELECT * FROM website WHERE url like ?", url)
-		if (err != nil) {
-			fmt.Println("can't execute select query: "+err.Error())
+		if err != nil {
+			fmt.Println("can't execute select query: " + err.Error())
 		}
 		for rows.Next() {
 			w := new(Website)
-			err := rows.Scan(&w.ID, &w.Url, &w.UserName, &w.Password)
-			if (err != nil) {
-				fmt.Println("can't read into struct: "+err.Error())
+			err := rows.Scan(&w.ID, &w.Url, &w.UserName, &w.Password, &w.Timestamp)
+			if err != nil {
+				fmt.Println("can't read into struct: " + err.Error())
 			}
 			returnString = returnString + w.ToString()
 		}
 		err = rows.Err()
-		if(err != nil){
-			fmt.Println("Error with Row: "+err.Error())
+		if err != nil {
+			fmt.Println("Error with Row: " + err.Error())
 		}
 
 		ciphertext, err := encrypt([]byte(returnString))
@@ -76,7 +80,7 @@ func get_func(rw http.ResponseWriter, req *http.Request) {
 			fmt.Println("Error: " + err.Error())
 		}
 		rw.Write(ciphertext)
-	}else{
+	} else {
 		ciphertext, err := encrypt([]byte("no get parameter given"))
 		if err != nil {
 			fmt.Println("Error: " + err.Error())

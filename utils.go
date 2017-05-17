@@ -1,16 +1,16 @@
 package main
 
 import (
-	"crypto/aes"
-	"io"
-	"crypto/cipher"
-	"errors"
-	"encoding/base64"
-	"crypto/rand"
-	"net/http"
 	"bytes"
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/rand"
+	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io"
+	"net/http"
 )
 
 func getRequestContentFromRequest(req *http.Request) map[string]interface{} {

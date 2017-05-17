@@ -1,8 +1,10 @@
 package main
+
 import (
-	"net/http"
 	"github.com/gorilla/mux"
+	"net/http"
 )
+
 func NewRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 	for _, route := range routes {
