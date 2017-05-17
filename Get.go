@@ -4,14 +4,15 @@ import (
 	"fmt"
 )
 
-func Get(unDecryptedUrl string) []byte {
+func Get(unDecryptedUrl string) []string {
 	url, err := decrypt([]byte(unDecryptedUrl))
 	if err != nil {
 		fmt.Println("Error: " + err.Error())
 	}
 
+	returnArray := []string{}
 	if len(url) != 0 {
-		var returnString string = "Url         UserName         Password         Timestamp"
+		returnArray = append(returnArray, "Url         UserName         Password         Timestamp")
 		rows, err := db.Query("SELECT * FROM website WHERE url like ?", url)
 		if err != nil {
 			fmt.Println("can't execute select query: " + err.Error())
@@ -22,15 +23,14 @@ func Get(unDecryptedUrl string) []byte {
 			if err != nil {
 				fmt.Println("can't read into struct: " + err.Error())
 			}
-			returnString = returnString + w.ToString()
+			returnArray = append(returnArray, w.ToString())
 		}
 		err = rows.Err()
 		if err != nil {
 			fmt.Println("Error with Row: " + err.Error())
 		}
-
-		return []byte(returnString)
 	} else {
-		return []byte("no get parameter given")
+		returnArray = append(returnArray, "no get parameter given")
 	}
+	return returnArray
 }

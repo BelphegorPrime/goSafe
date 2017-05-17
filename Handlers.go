@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"encoding/json"
 )
 
 func save_func(rw http.ResponseWriter, req *http.Request) {
@@ -16,15 +17,28 @@ func save_func(rw http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		fmt.Println("Error: " + err.Error())
 	}
-	rw.Write(cipherText)
+	values := map[string]interface{}{"responseText": string(cipherText)}
+	jsonValue, err := json.Marshal(values)
+	if err != nil {
+		fmt.Println("Error: " + err.Error())
+	}
+	rw.Write(jsonValue)
 }
 
 func get_func(rw http.ResponseWriter, req *http.Request) {
 	requestContent := getRequestContentFromRequest(req)
 	returnValue := Get(requestContent["url"].(string))
-	cipherText, err := encrypt(returnValue)
+	for i := 0; i < len(returnValue); i++ {
+		cipherText, err := encrypt([]byte(returnValue[i]))
+		if err != nil {
+			fmt.Println("Error: " + err.Error())
+		}
+		returnValue[i]=string(cipherText)
+	}
+	values := map[string]interface{}{"responseText": returnValue}
+	jsonValue, err := json.Marshal(values)
 	if err != nil {
 		fmt.Println("Error: " + err.Error())
 	}
-	rw.Write(cipherText)
+	rw.Write(jsonValue)
 }
