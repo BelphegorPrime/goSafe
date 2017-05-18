@@ -42,3 +42,22 @@ func get_func(rw http.ResponseWriter, req *http.Request) {
 	}
 	rw.Write(jsonValue)
 }
+
+func delete_func(rw http.ResponseWriter, req *http.Request){
+	requestContent := getRequestContentFromRequest(req)
+	returnValue := Delete(
+		requestContent["url"].(string),
+		requestContent["username"].(string),
+		requestContent["password"].(string),
+	)
+	cipherText, err := encrypt(returnValue)
+	if err != nil {
+		fmt.Println("Error: " + err.Error())
+	}
+	values := map[string]interface{}{"responseText": string(cipherText)}
+	jsonValue, err := json.Marshal(values)
+	if err != nil {
+		fmt.Println("Error: " + err.Error())
+	}
+	rw.Write(jsonValue)
+}

@@ -25,4 +25,10 @@ var routes = Routes{
 		"/get",
 		get_func,
 	},
+	Route{
+		"delete",
+		"POST",
+		"/delete",
+		delete_func,
+	},
 }
