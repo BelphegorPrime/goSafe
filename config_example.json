@@ -1,7 +1,9 @@
 {
-  "host": "127.0.0.1:3306",
-  "user": "user",
-  "password": "userpassword",
+  "db_host": "127.0.0.1:3306",
+  "db_user": "user",
+  "db_password": "userpassword",
+  "basic_auth_user": "user",
+  "basic_auth_password": "userpassword",
   "database": "safe",
-  "key": "some32byteslongkey______________"
+  "key": "some32byteslongkey12345678901234"
 }

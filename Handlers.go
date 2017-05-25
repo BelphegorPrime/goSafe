@@ -1,9 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"encoding/json"
 )
 
 func save_func(rw http.ResponseWriter, req *http.Request) {
@@ -33,7 +33,7 @@ func get_func(rw http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			fmt.Println("Error: " + err.Error())
 		}
-		returnValue[i]=string(cipherText)
+		returnValue[i] = string(cipherText)
 	}
 	values := map[string]interface{}{"responseText": returnValue}
 	jsonValue, err := json.Marshal(values)
@@ -43,7 +43,7 @@ func get_func(rw http.ResponseWriter, req *http.Request) {
 	rw.Write(jsonValue)
 }
 
-func delete_func(rw http.ResponseWriter, req *http.Request){
+func delete_func(rw http.ResponseWriter, req *http.Request) {
 	requestContent := getRequestContentFromRequest(req)
 	returnValue := Delete(
 		requestContent["url"].(string),

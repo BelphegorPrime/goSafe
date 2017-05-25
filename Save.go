@@ -9,10 +9,10 @@ func Save(url string, username string, password string) []byte {
 
 	if len(url) != 0 && len(username) != 0 && len(password) != 0 {
 		count, errorstring := getCount(url, username, password)
-		if(errorstring != nil){
+		if errorstring != nil {
 			return errorstring
 		}
-		if(count == 0){
+		if count == 0 {
 			_, err := db.Exec("INSERT INTO website("+
 				"url, "+
 				"username, "+
@@ -33,7 +33,6 @@ func Save(url string, username string, password string) []byte {
 		} else {
 			return []byte("Entry already exists.")
 		}
-
 
 	} else {
 		return []byte("not enough parameters given")

@@ -16,11 +16,13 @@ var configuration Configuration
 var key []byte
 
 type Configuration struct {
-	Host     string `json:"host"`
-	User     string `json:"user"`
-	Password string `json:"password"`
-	Database string `json:"database"`
-	Key      string `json:"key"`
+	DBHost            string `json:"db_host"`
+	DBUser            string `json:"db_user"`
+	DBPassword        string `json:"db_password"`
+	BasicAuthUser     string `json:"basic_auth_user"`
+	BasicAuthPassword string `json:"basic_auth_password"`
+	Database          string `json:"database"`
+	Key               string `json:"key"`
 }
 
 func init() {
@@ -33,11 +35,10 @@ func init() {
 	configuration = Configuration{}
 	jsonDecoder.Decode(&configuration)
 	fmt.Println("<Datenbankverbindung herstellen>")
-	dbFromConfig, err := sql.Open("mysql", configuration.User+":"+configuration.Password+"@tcp("+configuration.Host+")/"+configuration.Database+"?parseTime=true")
+	db, err = sql.Open("mysql", configuration.DBUser+":"+configuration.DBPassword+"@tcp("+configuration.DBHost+")/"+configuration.Database+"?parseTime=true")
 	if err != nil {
 		fmt.Println("Datenbankzugriffs fehler: " + err.Error())
 	}
-	db = dbFromConfig
 	key = []byte(configuration.Key) // 32 bytes
 }
 

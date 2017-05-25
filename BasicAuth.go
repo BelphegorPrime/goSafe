@@ -27,7 +27,7 @@ func BasicAuth(inner http.Handler, name string) http.Handler {
 			return
 		}
 
-		if pair[0] != configuration.User || pair[1] != configuration.Password {
+		if pair[0] != configuration.BasicAuthUser || pair[1] != configuration.BasicAuthPassword {
 			http.Error(w, "Not authorized", 401)
 			return
 		}
