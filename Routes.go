@@ -31,4 +31,10 @@ var routes = Routes{
 		"/delete",
 		delete_func,
 	},
+	Route{
+		"all",
+		"POST",
+		"/all",
+		all_func,
+	},
 }

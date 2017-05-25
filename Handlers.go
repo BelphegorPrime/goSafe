@@ -61,3 +61,20 @@ func delete_func(rw http.ResponseWriter, req *http.Request) {
 	}
 	rw.Write(jsonValue)
 }
+
+func all_func(rw http.ResponseWriter, req *http.Request){
+	returnValue := All()
+	for i := 0; i < len(returnValue); i++ {
+		cipherText, err := encrypt([]byte(returnValue[i]))
+		if err != nil {
+			fmt.Println("Error: " + err.Error())
+		}
+		returnValue[i] = string(cipherText)
+	}
+	values := map[string]interface{}{"responseText": returnValue}
+	jsonValue, err := json.Marshal(values)
+	if err != nil {
+		fmt.Println("Error: " + err.Error())
+	}
+	rw.Write(jsonValue)
+}
