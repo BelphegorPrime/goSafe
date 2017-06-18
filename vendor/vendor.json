@@ -3,10 +3,10 @@
 	"ignore": "test",
 	"package": [
 		{
-			"checksumSHA1": "CDIzWaOm1agRyPcqIUyAcKiQ44Y=",
+			"checksumSHA1": "y7zbKSBhU4On0ek5pVmPRi9fX8w=",
 			"path": "github.com/BelphegorPrime/lib",
-			"revision": "9cd56477f7f3539e37b0b338158da199662f9298",
-			"revisionTime": "2017-06-18T13:12:49Z"
+			"revision": "3cc1c5138971385ec00881658a92a79d7e1b48ca",
+			"revisionTime": "2017-06-18T14:15:21Z"
 		},
 		{
 			"checksumSHA1": "lBHs7cGd/WB6Ng0pBT+9DXFunR4=",
