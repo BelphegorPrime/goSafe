@@ -7,6 +7,10 @@ import (
 	"net/http"
 )
 
+func index_func(rw http.ResponseWriter, req *http.Request){
+	rw.Write([]byte("HelloWorld"))
+}
+
 func save_func(rw http.ResponseWriter, req *http.Request) {
 	requestContent := lib.GetRequestContentFromRequest(req)
 	returnValue := Save(
