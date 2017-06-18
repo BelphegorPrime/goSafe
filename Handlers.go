@@ -3,17 +3,18 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/BelphegorPrime/lib"
 	"net/http"
 )
 
 func save_func(rw http.ResponseWriter, req *http.Request) {
-	requestContent := getRequestContentFromRequest(req)
+	requestContent := lib.GetRequestContentFromRequest(req)
 	returnValue := Save(
 		requestContent["url"].(string),
 		requestContent["username"].(string),
 		requestContent["password"].(string),
 	)
-	cipherText, err := encrypt(returnValue)
+	cipherText, err := lib.Encrypt(returnValue, key)
 	if err != nil {
 		fmt.Println("Error: " + err.Error())
 	}
@@ -26,10 +27,10 @@ func save_func(rw http.ResponseWriter, req *http.Request) {
 }
 
 func get_func(rw http.ResponseWriter, req *http.Request) {
-	requestContent := getRequestContentFromRequest(req)
+	requestContent := lib.GetRequestContentFromRequest(req)
 	returnValue := Get(requestContent["url"].(string))
 	for i := 0; i < len(returnValue); i++ {
-		cipherText, err := encrypt([]byte(returnValue[i]))
+		cipherText, err := lib.Encrypt([]byte(returnValue[i]), key)
 		if err != nil {
 			fmt.Println("Error: " + err.Error())
 		}
@@ -44,13 +45,13 @@ func get_func(rw http.ResponseWriter, req *http.Request) {
 }
 
 func delete_func(rw http.ResponseWriter, req *http.Request) {
-	requestContent := getRequestContentFromRequest(req)
+	requestContent := lib.GetRequestContentFromRequest(req)
 	returnValue := Delete(
 		requestContent["url"].(string),
 		requestContent["username"].(string),
 		requestContent["password"].(string),
 	)
-	cipherText, err := encrypt(returnValue)
+	cipherText, err := lib.Encrypt(returnValue, key)
 	if err != nil {
 		fmt.Println("Error: " + err.Error())
 	}
@@ -62,10 +63,10 @@ func delete_func(rw http.ResponseWriter, req *http.Request) {
 	rw.Write(jsonValue)
 }
 
-func all_func(rw http.ResponseWriter, req *http.Request){
+func all_func(rw http.ResponseWriter, req *http.Request) {
 	returnValue := All()
 	for i := 0; i < len(returnValue); i++ {
-		cipherText, err := encrypt([]byte(returnValue[i]))
+		cipherText, err := lib.Encrypt([]byte(returnValue[i]), key)
 		if err != nil {
 			fmt.Println("Error: " + err.Error())
 		}

@@ -32,3 +32,5 @@ server.crt
 server.key
 safe
 goSafe
+vendor
+!vendor/vendor.json

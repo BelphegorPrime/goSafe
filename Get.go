@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/BelphegorPrime/lib"
 )
 
 func Get(unDecryptedUrl string) []string {
-	url, err := decrypt([]byte(unDecryptedUrl))
+	url, err := lib.Decrypt([]byte(unDecryptedUrl), key)
 	if err != nil {
 		fmt.Println("Error: " + err.Error())
 	}
