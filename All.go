@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/BelphegorPrime/lib"
 )
 
-func All() []string {
+func All(crypto float64) []string {
 	returnArray := []string{}
 	returnArray = append(returnArray, "Url         UserName         Password         Timestamp")
 	rows, err := db.Query("SELECT * FROM website")
@@ -23,5 +24,16 @@ func All() []string {
 	if err != nil {
 		fmt.Println("Error with Row: " + err.Error())
 	}
+
+	if crypto >= 0 {
+		for i := 0; i < len(returnArray); i++ {
+			cipherText, err := lib.Encrypt([]byte(returnArray[i]), key)
+			if err != nil {
+				fmt.Println("Error: " + err.Error())
+			}
+			returnArray[i] = string(cipherText)
+		}
+	}
+
 	return returnArray
 }

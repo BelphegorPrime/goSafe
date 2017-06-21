@@ -50,6 +50,6 @@ func Get(unDecryptedUrl string, crypto float64) []string {
 			returnArray[i] = string(cipherText)
 		}
 	}
-	
+
 	return returnArray
 }

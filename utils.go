@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"errors"
+	"github.com/BelphegorPrime/lib"
 )
 
 func getCount(url string, username string, password string) (int, []byte) {
@@ -20,4 +22,18 @@ func getCount(url string, username string, password string) (int, []byte) {
 		rows.Scan(&count)
 	}
 	return count, nil
+}
+
+func makeCrypto(returnValue []byte, crypto float64) []byte {
+	cipherText :=[]byte{}
+	err := errors.New("")
+	if crypto >=0 {
+		cipherText, err = lib.Encrypt(returnValue, key)
+		if err != nil {
+			fmt.Println("Error: " + err.Error())
+		}
+	}else {
+		cipherText = returnValue
+	}
+	return cipherText
 }

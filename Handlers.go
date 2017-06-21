@@ -18,11 +18,10 @@ func save_func(rw http.ResponseWriter, req *http.Request) {
 		requestContent["username"].(string),
 		requestContent["password"].(string),
 	)
-	cipherText, err := lib.Encrypt(returnValue, key)
-	if err != nil {
-		fmt.Println("Error: " + err.Error())
-	}
-	values := map[string]interface{}{"responseText": string(cipherText)}
+
+	returnValue = makeCrypto(returnValue, requestContent["crypto"].(float64))
+
+	values := map[string]interface{}{"responseText": string(returnValue)}
 	jsonValue, err := json.Marshal(values)
 	if err != nil {
 		fmt.Println("Error: " + err.Error())
@@ -54,11 +53,10 @@ func delete_func(rw http.ResponseWriter, req *http.Request) {
 		requestContent["username"].(string),
 		requestContent["password"].(string),
 	)
-	cipherText, err := lib.Encrypt(returnValue, key)
-	if err != nil {
-		fmt.Println("Error: " + err.Error())
-	}
-	values := map[string]interface{}{"responseText": string(cipherText)}
+
+	returnValue = makeCrypto(returnValue, requestContent["crypto"].(float64))
+
+	values := map[string]interface{}{"responseText": string(returnValue)}
 	jsonValue, err := json.Marshal(values)
 	if err != nil {
 		fmt.Println("Error: " + err.Error())
@@ -67,14 +65,9 @@ func delete_func(rw http.ResponseWriter, req *http.Request) {
 }
 
 func all_func(rw http.ResponseWriter, req *http.Request) {
-	returnValue := All()
-	for i := 0; i < len(returnValue); i++ {
-		cipherText, err := lib.Encrypt([]byte(returnValue[i]), key)
-		if err != nil {
-			fmt.Println("Error: " + err.Error())
-		}
-		returnValue[i] = string(cipherText)
-	}
+	requestContent := lib.GetRequestContentFromRequest(req)
+	returnValue := All(requestContent["crypto"].(float64))
+
 	values := map[string]interface{}{"responseText": returnValue}
 	jsonValue, err := json.Marshal(values)
 	if err != nil {
