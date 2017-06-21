@@ -38,13 +38,7 @@ func get_func(rw http.ResponseWriter, req *http.Request) {
 	}else{
 		returnValue = Get(requestContent["url"].(string), -1)
 	}
-	for i := 0; i < len(returnValue); i++ {
-		cipherText, err := lib.Encrypt([]byte(returnValue[i]), key)
-		if err != nil {
-			fmt.Println("Error: " + err.Error())
-		}
-		returnValue[i] = string(cipherText)
-	}
+
 	values := map[string]interface{}{"responseText": returnValue}
 	jsonValue, err := json.Marshal(values)
 	if err != nil {

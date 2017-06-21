@@ -40,5 +40,16 @@ func Get(unDecryptedUrl string, crypto float64) []string {
 	} else {
 		returnArray = append(returnArray, "no get parameter given")
 	}
+
+	if crypto >= 0 {
+		for i := 0; i < len(returnArray); i++ {
+			cipherText, err := lib.Encrypt([]byte(returnArray[i]), key)
+			if err != nil {
+				fmt.Println("Error: " + err.Error())
+			}
+			returnArray[i] = string(cipherText)
+		}
+	}
+	
 	return returnArray
 }
