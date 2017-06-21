@@ -3,12 +3,19 @@ package main
 import (
 	"fmt"
 	"github.com/BelphegorPrime/lib"
+	"errors"
 )
 
-func Get(unDecryptedUrl string) []string {
-	url, err := lib.Decrypt([]byte(unDecryptedUrl), key)
-	if err != nil {
-		fmt.Println("Error: " + err.Error())
+func Get(unDecryptedUrl string, crypto float64) []string {
+	url := []byte{}
+	err := errors.New("")
+	if crypto >= 0 {
+		url, err = lib.Decrypt([]byte(unDecryptedUrl), key)
+		if err != nil {
+			fmt.Println("Error: " + err.Error())
+		}
+	}else{
+		url = []byte(unDecryptedUrl)
 	}
 
 	returnArray := []string{}

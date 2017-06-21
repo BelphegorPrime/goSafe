@@ -32,7 +32,12 @@ func save_func(rw http.ResponseWriter, req *http.Request) {
 
 func get_func(rw http.ResponseWriter, req *http.Request) {
 	requestContent := lib.GetRequestContentFromRequest(req)
-	returnValue := Get(requestContent["url"].(string))
+	returnValue := []string{}
+	if requestContent["crypto"].(float64) >= 0 {
+		returnValue = Get(requestContent["url"].(string), requestContent["crypto"].(float64))
+	}else{
+		returnValue = Get(requestContent["url"].(string), -1)
+	}
 	for i := 0; i < len(returnValue); i++ {
 		cipherText, err := lib.Encrypt([]byte(returnValue[i]), key)
 		if err != nil {
